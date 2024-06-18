@@ -43,16 +43,32 @@ export const registerUser = asyncHandleer(async (req, res) => {
 
   console.log(user);
 
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user._id
+  );
+
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
   if (!createdUser) {
     throw new ApiError(500, "Something went wrong while registering the user");
   }
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
 
   return res
     .status(201)
-    .json(new ApiResponse(201, createdUser, "user created succesfully"));
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponse(
+        201,
+        { user: createdUser, accessToken, refreshToken },
+        "user created succesfully"
+      )
+    );
 });
 
 export const loginUser = asyncHandleer(async (req, res) => {

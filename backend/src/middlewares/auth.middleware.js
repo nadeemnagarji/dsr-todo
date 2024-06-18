@@ -8,22 +8,23 @@ export const verifyJwt = asyncHandleer(async (req, res, next) => {
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
-    // console.log(token);
+    console.log(token);
     if (!token) {
       throw new ApiError(401, "Unauthorized request");
     }
-
+    // console.log("code breaks here");
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
+    console.log(decodedToken, "hekkko");
     const user = await User.findById(decodedToken?._id).select(
       "-password -refreshToken"
     );
+    // console.log(user);
     if (!user) {
       throw new ApiError(401, "Invalid Access Token");
     }
 
     req.user = user;
-    console.log(user);
+    // console.log(user);
     //console.log("hi");
     next();
   } catch (error) {

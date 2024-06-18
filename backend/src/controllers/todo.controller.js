@@ -53,7 +53,7 @@ export const allTodos = asyncHandleer(async (req, res) => {
 
 export const deleteTodo = asyncHandleer(async (req, res) => {
   const { todoId } = req.params;
-
+  console.log(todoId, "this is todoId");
   const todo = await todos.findOneAndDelete({ _id: todoId });
   console.log(todo);
   if (!todo) {

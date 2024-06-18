@@ -1,13 +1,26 @@
 import "./App.css";
-import { Button } from "./components/ui/button.tsx";
-
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import SignUpPage from "./pages/SignUpPage.tsx";
+import DashBoard from "./pages/DashBoard.tsx";
+import SignInPage from "./pages/SignInPage.tsx";
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <Button>Click Me</Button>
+      <Router>
+        <Routes>
+          <Route path="/" element={<SignUpPage />} />
+          <Route path="/dashboard" element={<DashBoard />} />
+          <Route path="/login" element={<SignInPage />} />
+        </Routes>
+      </Router>
     </>
   );
 }
 
 export default App;
+/*
+
+     <Route path="/dashboard" element={<DashBoard />} />
+            <Route path="/dashboard/create/:id" element={<CreatePage />} />
+  <Route path="/login" element={<SignInPage />}></Route>
+*/
